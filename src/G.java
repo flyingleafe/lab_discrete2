@@ -15,35 +15,40 @@ public class G {
 
     int n;
     int k;
-    int[] counts;
-    int[][] a;
-    boolean[] used;
+    int[] bl;
 
-    public void gen2(int[] c, int) {
-
+    public void output() {
+        for (int i = 0; i < k; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (bl[j] == i)
+                    out.printf("%d ", j + 1);
+            }
+            out.write('\n');
+        }
+        out.write('\n');
     }
 
-    public void gen1(int p, int sum) {
-        if (sum == n) {
-            gen2(counts.clone(), 0, 0);
+    public void gen(int p, int max) {
+        if (p == n) {
+            output();
             return;
         }
-        if (p == k) {
-            return;
+        int s = 0;
+        if (n - p == k - max) {
+            s = max;
         }
-        for (int i = (p > 0) ? counts[p - 1] : 1; i <= n / k; ++i) {
-            counts[p] = i;
-            gen1(p + 1, sum + i);
+        for (int i = s; i <= Math.min(max, k - 1); ++i) {
+            bl[p] = i;
+            gen(p + 1, Math.max(max, i + 1));
         }
     }
+
 
     public void solve() throws IOException {
         n = in.nextInt();
         k = in.nextInt();
-        counts = new int[k];
-        used = new boolean[n];
-        a = new int[k][n];
-        gen1(0, 0);
+        bl = new int[n];
+        gen(0, 0);
     }
 
     public void run() {
